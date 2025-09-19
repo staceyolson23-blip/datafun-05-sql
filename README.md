@@ -73,14 +73,64 @@ python main.py
 ---
 
 ## 📂 Project Structure
-```
+
 datafun-05-sql/
+├── data/
+│   ├── standards.csv          # sample standards data
+│   └── assessments.csv         # sample assessments data
+│
+├── sql_create/
+│   ├── 01_create_tables.sql    # creates standards & assessments tables
+│   └── 02_alter_tables.sql     # adds is_mastery column to assessments
+│
 ├── .gitignore
-├── .venv/                  # local virtual environment (not committed)
-├── main.py                 # starter script
+├── .venv/                      # local virtual environment (not committed)
+├── main.py                     # creates tables and runs SQL files
+├── load_csv.py                 # loads CSV data into the database
+├── verify.py                   # runs a JOIN query to verify relationships
 ├── requirements.txt
+├── school_db.sqlite            # local SQLite database (not committed)
 └── README.md
 ```
+---
+
+## 🗃️ Database Overview (CC5.2)
+
+This project now includes a **school database** (`school_db.sqlite`) with two related tables:
+
+### standards
+- `standard_id` (TEXT, primary key — GUID)
+- `code` (TEXT — like 8.EE.5)
+- `domain` (TEXT — category of the standard)
+- `description` (TEXT — full explanation)
+
+### assessments
+- `assessment_id` (TEXT, primary key — GUID)
+- `title` (TEXT — name of the assessment)
+- `date_given` (TEXT — stored as YYYYMMDD)
+- `standard_id` (TEXT, foreign key → standards.standard_id)
+- `is_mastery` (INTEGER — added later with ALTER TABLE, default 0)
+
+This creates a **one-to-many (1:M)** relationship:  
+- Each **standard** can have many **assessments**  
+- Each **assessment** is linked to exactly one **standard**
+
+### Data Sources
+- CSV files in `/data/` folder  
+  - `standards.csv` — list of three sample math standards  
+  - `assessments.csv` — three assessments linked to those standards
+
+### How to Load Data
+Run this in the terminal:
+
+    python3 load_csv.py
+
+### How to Verify
+Run this in the terminal:
+
+    python3 verify.py
+
+This prints a joined table of assessments and their related standards.
 
 ---
 
