@@ -73,7 +73,7 @@ python main.py
 ---
 
 ## 📂 Project Structure
-
+```
 datafun-05-sql/
 ├── data/
 │   ├── standards.csv          # sample standards data
@@ -91,7 +91,7 @@ datafun-05-sql/
 ├── requirements.txt
 ├── school_db.sqlite            # local SQLite database (not committed)
 └── README.md
-
+```
 ---
 
 ## 🗃️ Database Overview (CC5.2)
