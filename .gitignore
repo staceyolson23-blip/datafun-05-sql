@@ -1,5 +1,15 @@
+# venv & caches
 .venv/
 __pycache__/
 *.pyc
-# ignore local dbs
+
+# OS/editor
+.DS_Store
+.vscode/
+
+# local databases
+*.db
+
+# local SQLite database
+*.sqlite
 *.db
