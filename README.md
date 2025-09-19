@@ -36,7 +36,7 @@ source .venv/bin/activate
 
 **Windows PowerShell:**
 ```powershell
-python -m venv .venv
+python3 -m venv .venv
 .venv\Scripts\Activate
 ```
 
@@ -51,7 +51,7 @@ pip install -r requirements.txt
 ## ▶️ How to Run
 Run the main script to create the database, add records, and print them.
 ```bash
-python main.py
+python3 main.py
 ```
 
 **Expected output:**
@@ -95,6 +95,8 @@ datafun-05-sql/
 ---
 
 ## 🗃️ Database Overview (CC5.2)
+
+> ⚠️ Note: The `school_db.sqlite` file is **local only** and is not included in this repository.
 
 This project now includes a **school database** (`school_db.sqlite`) with two related tables:
 
