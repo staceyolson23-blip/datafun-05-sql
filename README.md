@@ -136,6 +136,57 @@ This prints a joined table of assessments and their related standards.
 
 ---
 
+## Project DB (Geometry FA/SA)
+
+- Data lives in `data/` as CSVs: `students.csv`, `assessments.csv`, `scores.csv`.
+- Schema: `sql_create/01_create_tables.sql`
+- Build/load: `python3 init_db.py` (creates `project.sqlite3`)
+- View DB: VS Code "SQLite" extension (alexcvzz) or "SQLite Viewer" (Florian).
+
+### Verification queries
+```sql
+SELECT 'students' t, COUNT(*) FROM students
+UNION ALL SELECT 'assessments', COUNT(*) FROM assessments
+UNION ALL SELECT 'scores', COUNT(*) FROM scores;
+
+SELECT assessment_id, ROUND(AVG(score),2) avg, SUM(CASE WHEN status='NA' OR score IS NULL THEN 1 ELSE 0 END) na
+FROM scores GROUP BY assessment_id ORDER BY assessment_id;
+
+WITH fa AS (
+  SELECT student_id, AVG(score) avg_fa
+  FROM scores WHERE assessment_id LIKE 'FA_%' AND status='Recorded' GROUP BY student_id
+), sa AS (
+  SELECT student_id, score sa1
+  FROM scores WHERE assessment_id='SA_1' AND status='Recorded'
+)
+SELECT s.student_id, ROUND(fa.avg_fa,2) avg_fa, sa.sa1, ROUND(sa.sa1 - fa.avg_fa,2) delta
+FROM students s LEFT JOIN fa USING(student_id) LEFT JOIN sa USING(student_id)
+ORDER BY delta DESC;
+
+
+---
+
+# 🗂 Consider Remove / Archive
+
+## `sql_create/02_alter_tables.sql`
+- **Action:** Archive or delete (not used by the new flow).
+
+## `load_csv.py`
+- If it targets old schemas (authors/standards/etc.), it will re-insert wrong data.
+- **Action:** Archive or delete. (Your new `init_db.py` already loads CSVs.)
+
+## `verify.py`
+- If built for old tables, update it or replace with the SQL in the README.
+- **Option:** Replace contents with minimal Python that runs the three verification queries and prints results (optional).
+
+## `school_db.sqlite`, `datafun.db`, or **any other** `.sqlite*` files
+- **Action:** Archive or delete so you don’t confuse which DB is current.
+- Keep only **`project.sqlite3`** as the assignment DB.
+
+---
+
+# 🧹 `.gitignore`  *(confirm these lines exist)*
+
 ## 🔗 References
 - Python sqlite3 docs: https://docs.python.org/3/library/sqlite3.html  
 - SQLite docs: https://www.sqlite.org/docs.html  

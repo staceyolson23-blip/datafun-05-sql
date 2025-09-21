@@ -1,4 +1,6 @@
-assessment_id,title,date_given,standard_id
-11112222-3333-4444-5555-666677778888,Unit 2 Quiz - Slope from Graph,20250925,a1b2c3d4-1111-2222-3333-444455556666
-22223333-4444-5555-6666-777788889999,Functions Concept Check,20251002,b2c3d4e5-aaaa-bbbb-cccc-ddddeeeeffff
-33334444-5555-6666-7777-88889999aaaa,Scatterplots Exit Ticket,20251009,c3d4e5f6-9999-8888-7777-666655554444
+assessment_id,title,date_given,type
+FA_2,Formative Assessment 2,2025-09-05,Formative
+FA_3,Formative Assessment 3,2025-09-10,Formative
+FA_4,Formative Assessment 4,2025-09-12,Formative
+FA_5,Formative Assessment 5,2025-09-12,Formative
+SA_1,Summative Assessment 1,2025-09-17,Summative
