@@ -150,7 +150,10 @@ The dataset models a simplified middle school classroom:
   - 2.0 = Developing  
   - 0 or NULL = Missing/No evidence  
 
-For demonstration, `03_insert_records.sql` adds a **fictional formative assessment** `FA_X` so you can show how to insert new records. (Scores for `FA_X` are *not* preloaded; see `db02_features.py` for feature operations.)
+For demonstration, `03_insert_records.sql` adds **10 fictional students (IDs 2001–2010)**,  
+**10 new assessments (FA_6–FA_14 and SA_2)**, and **100 fictional scores** so that each  
+new student has a score for each new assessment. This ensures the project meets the  
+requirement of inserting at least 10 new records per table.
 
 This structure supports questions like:
 - How do formative averages compare to summative averages?  
