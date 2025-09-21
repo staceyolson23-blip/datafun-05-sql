@@ -3,12 +3,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).parent
 DB = ROOT / "project.sqlite3"
-SCHEMA = ROOT / "sql_create" / "01_create_tables.sql"
 DATA_DIR = ROOT / "data"
-
-def run_sql(conn, path: Path):
-    with path.open("r", encoding="utf-8") as f:
-        conn.executescript(f.read())
 
 def load_csv(conn, table, csv_path, cols):
     with open(csv_path, newline="", encoding="utf-8") as f:
@@ -19,27 +14,19 @@ def load_csv(conn, table, csv_path, cols):
     conn.executemany(sql, rows)
 
 def main():
-    if DB.exists():
-        DB.unlink()
+    with sqlite3.connect(DB) as conn:
+        conn.execute("PRAGMA foreign_keys = ON;")
 
-    conn = sqlite3.connect(DB)
-    conn.execute("PRAGMA foreign_keys = ON;")
-    run_sql(conn, SCHEMA)
+        # Load CSV data
+        load_csv(conn, "students",    DATA_DIR / "students.csv",    ["student_id","grade_level"])
+        load_csv(conn, "assessments", DATA_DIR / "assessments.csv", ["assessment_id","title","date_given","type"])
+        load_csv(conn, "scores",      DATA_DIR / "scores.csv",      ["student_id","assessment_id","score","status"])
+        conn.commit()
 
-    load_csv(conn, "students",    DATA_DIR / "students.csv",    ["student_id","grade_level"])
-    load_csv(conn, "assessments", DATA_DIR / "assessments.csv", ["assessment_id","title","date_given","type"])
-    load_csv(conn, "scores",      DATA_DIR / "scores.csv",      ["student_id","assessment_id","score","status"])
+        # NEW: print row counts
+        for table in ["students","assessments","scores"]:
+            count = conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+            print(f"{table:12} rows: {count}")
 
-    # sanity print: what tables exist now?
-    print(conn.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name").fetchall())
-
-    # Debug: print tables
-    print(conn.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name").fetchall())
-
-    conn.commit()
-    conn.close()
-    print(f"Database initialized at {DB.resolve()}")
-
-    
 if __name__ == "__main__":
     main()

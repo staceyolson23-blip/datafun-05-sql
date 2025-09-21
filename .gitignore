@@ -11,5 +11,7 @@ __pycache__/
 *.db
 
 # local SQLite database
+project.sqlite3
 *.sqlite
+*.sqlite3
 *.db
